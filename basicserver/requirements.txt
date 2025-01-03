@@ -1,4 +1,7 @@
 aiohttp==3.11.11
 Django==5.1.1
+jaeger-client==4.4.0
 jsonschema==3.2.0
+prometheus-client==0.17.1
+pulsar-client==2.10.2
 requests==2.31.0

@@ -12,6 +12,10 @@ COPY . .
 COPY --from=een_web /usr/src/app/een_web/. /usr/src/app/een_web
 
 RUN pip3 install -r requirements.txt
+RUN apt-get update && apt-get install -y \
+    vim \
+    procps \
+    curl
 
 CMD ["python3", "/usr/src/app/manage.py", "runserver"]
 #ENTRYPOINT ["tail", "-f", "/dev/null"]
