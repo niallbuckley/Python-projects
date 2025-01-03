@@ -9,8 +9,21 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+import os
+from een_web.common.meazure import meazure
+
 
 from pathlib import Path
+
+MEAZURE_JAEGER_ENABLED = os.environ.get('EEN_MEAZURE_JAEGER_ENABLED', 'true').lower() == 'true'
+perc = float(os.environ.get('EEN_MEAZURE_PERCENT', 100.0))
+
+meazure.Config['context']['default'] = {
+    'ratio': perc / 100.0,
+    'greenlet': os.environ.get('EEN_MEAZURE_GREENLET', 'false').lower() == 'true',
+    'tag_as_jaeger_name':'path',
+    'instruments':['jaeger']
+}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
