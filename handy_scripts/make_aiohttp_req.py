@@ -1,23 +1,11 @@
+import aiohttp_inject_header
 import aiohttp
 import asyncio
 import asyncio.exceptions
 
 url="https://google.com"
 
-def shim_aiohttp_request():
-    old_fn = aiohttp.ClientSession._request
-
-    async def shim_requests(self, method, url, *args, **kwargs):
-        headers = kwargs.get('headers', {})
-
-        # Inject the custom b3 header
-        headers['b3'] = 'asdfasdfasdf'
-        # Update the kwargs with the modified headers
-        kwargs['headers'] = headers
-
-        return await old_fn(self, method, url, *args, **kwargs)
-
-    aiohttp.ClientSession._request = shim_requests
+aiohttp_inject_header.shim_aiohttp_request()
 
 async def make_req(session):
     try:
@@ -39,10 +27,7 @@ async def make_req(session):
         print(f"Unable to send settings to archiver using url: {url}")
 
 async def main():
-    shim_aiohttp_request()
-
     async with aiohttp.ClientSession() as session:
         await make_req(session)
 
-
-asyncio.run(main())   
+asyncio.run(main())
