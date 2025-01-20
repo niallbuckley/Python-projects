@@ -1,4 +1,4 @@
-FROM harbor.eencloud.com/vms/een-web:0.0.223 as een_web
+FROM harbor.eencloud.com/qa/een-web-qa:latest as een_web
 FROM python:3.10-slim-bullseye
 
 ENV PYTHONUNBUFFERED 1
@@ -15,6 +15,7 @@ RUN pip3 install -r requirements.txt
 RUN apt-get update && apt-get install -y \
     vim \
     procps \
+    net-tools \
     curl
 
 CMD ["python3", "/usr/src/app/manage.py", "runserver"]
